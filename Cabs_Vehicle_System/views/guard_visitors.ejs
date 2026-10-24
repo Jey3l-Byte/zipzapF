@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/list.css">
+    <link rel="stylesheet" href="/extra.css">
+    <title>Visitor Logbook</title>
+</head>
+<body>
+
+    <div class="topbar">
+        <span>GUARD: <%= user.fullname %></span>
+        <a class="navlink first" href="/guard">Gate Search</a>
+        <a class="navlink" href="/guard/vehicles">Registered Vehicles</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="box wide">
+        <h2>VISITOR TIME IN</h2>
+        <p class="small">For cars that are NOT registered. Registered cars use the gate search.</p>
+        <form action="/visitor/in" method="POST">
+            <div class="formgrid">
+                <input name="visitor_name" type="text" placeholder="Visitor Name" maxlength="100" required>
+                <input name="plate" type="text" placeholder="Plate Number" maxlength="20" required>
+                <select name="id_shown" required>
+                    <option value="">-- ID Shown --</option>
+                    <% idChoices.forEach((c)=>{ %>
+                        <option><%= c %></option>
+                    <% }) %>
+                </select>
+                <input name="contact" type="text" placeholder="Contact Number" maxlength="30" required>
+                <input name="person_visited" type="text" placeholder="Person / Office to Visit" maxlength="100" required>
+                <input name="purpose" type="text" placeholder="Purpose" maxlength="150" required>
+            </div>
+            <button type="submit">Time In</button>
+        </form>
+    </div>
+
+    <div class="box wide">
+        <h2>VISITORS INSIDE</h2>
+        <div class="scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>TIME IN</th>
+                    <th>VISITOR</th>
+                    <th>PLATE</th>
+                    <th>ID SHOWN</th>
+                    <th>CONTACT</th>
+                    <th>VISITING</th>
+                    <th>PURPOSE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    if(inside.length > 0){
+                        inside.forEach((data)=>{
+                %>
+                <tr>
+                    <td><%= fmt(data.time_in) %></td>
+                    <td><%= data.visitor_name %></td>
+                    <td><%= data.plate %></td>
+                    <td><%= data.id_shown %></td>
+                    <td><%= data.contact %></td>
+                    <td><%= data.person_visited %></td>
+                    <td><%= data.purpose %></td>
+                    <td>
+                        <form action="/visitor/out" method="POST" onsubmit="return confirm('Time out this visitor?')">
+                            <input type="hidden" name="id" value="<%= data.idnum %>">
+                            <button type="submit" class="red">TIME OUT</button>
+                        </form>
+                    </td>
+                </tr>
+                <%
+                        })
+                    } else {
+                %>
+                <tr><td colspan="8">No visitors inside.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div class="box wide">
+        <h2>RECENTLY LEFT</h2>
+        <div class="scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>VISITOR</th>
+                    <th>PLATE</th>
+                    <th>VISITING</th>
+                    <th>TIME IN</th>
+                    <th>TIME OUT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    if(left.length > 0){
+                        left.forEach((data)=>{
+                %>
+                <tr>
+                    <td><%= data.visitor_name %></td>
+                    <td><%= data.plate %></td>
+                    <td><%= data.person_visited %></td>
+                    <td><%= fmt(data.time_in) %></td>
+                    <td><%= fmt(data.time_out) %></td>
+                </tr>
+                <%
+                        })
+                    } else {
+                %>
+                <tr><td colspan="5">No visitors have left yet.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+</body>
+</html>

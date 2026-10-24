@@ -1,0 +1,111 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #a1d0c8;
+    margin: 0;
+    padding-bottom: 40px;
+}
+
+.topbar {
+    background-color: #2f6f65;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topbar a {
+    color: white;
+}
+
+.box {
+    background-color: rgb(249, 249, 249);
+    width: 90%;
+    max-width: 800px;
+    margin: 25px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    color: #2f6f65;
+    font-family: monospace;
+    margin-top: 0;
+}
+
+form input, form select {
+    padding: 10px;
+    margin: 5px 3px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #03c73ea2;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #05802a;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    margin-top: 15px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+thead, th {
+    background-color: lab(74.7% -19.17 -13.61);
+    color: white;
+}
+
+th {
+    padding: 12px;
+    text-align: center;
+}
+
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    color: #0b0606;
+}
+
+.btn {
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+.btn.green { background-color: #05802a; }
+.btn.red { background-color: rgb(223, 24, 44); }
+.btn.big {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 16px;
+    padding: 12px 25px;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: white;
+}
+
+.badge.Pending { background-color: #e0a800; }
+.badge.Approved { background-color: #05802a; }
+.badge.Rejected { background-color: rgb(223, 24, 44); }
+
+.msg { font-weight: bold; }
+.msg.red { color: rgb(223, 24, 44); }

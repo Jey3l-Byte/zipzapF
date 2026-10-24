@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/list.css">
+    <title>Admin</title>
+</head>
+<body>
+
+    <div class="topbar">
+        <span>ADMIN: <%= user.fullname %></span>
+        <a href="/admin/history" style="margin-left:auto; margin-right:15px;">Gate History</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="box">
+        <h2>VEHICLE REQUESTS</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>OWNER</th>
+                    <th>PLATE</th>
+                    <th>TYPE</th>
+                    <th>BRAND</th>
+                    <th>COLOR</th>
+                    <th>STATUS</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    if(vehicle.length > 0){
+                        vehicle.forEach((data)=>{
+                %>
+                <tr>
+                    <td><%= data.fullname %></td>
+                    <td><%= data.plate %></td>
+                    <td><%= data.type %></td>
+                    <td><%= data.brand %></td>
+                    <td><%= data.color %></td>
+                    <td><span class="badge <%= data.status %>"><%= data.status %></span></td>
+                    <td>
+                        <% if(data.status === 'Pending'){ %>
+                            <a class="btn green" href="/review/<%= data.idnum %>/Approved" onclick="return confirm('Approve this vehicle?')">APPROVE</a>
+                            <a class="btn red" href="/review/<%= data.idnum %>/Rejected" onclick="return confirm('Reject this vehicle?')">REJECT</a>
+                        <% } else { %>
+                            -
+                        <% } %>
+                    </td>
+                </tr>
+                <%
+                        })
+                    } else {
+                %>
+                <tr><td colspan="7">No requests yet.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

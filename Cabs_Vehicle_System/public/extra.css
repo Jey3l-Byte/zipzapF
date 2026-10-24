@@ -1,0 +1,71 @@
+/* extra.css - only for the new pages (linked after list.css) */
+
+.topbar .navlink {
+    margin-right: 15px;
+}
+
+.topbar .navlink.first {
+    margin-left: auto;
+}
+
+.box.wide {
+    max-width: 1100px;
+}
+
+.badge.ENTRY, .badge.INSIDE { background-color: #05802a; }
+.badge.EXIT, .badge.OUTSIDE { background-color: #6c757d; }
+.badge.Registered { background-color: #2f6f65; }
+.badge.Visitor { background-color: #8a4fbf; }
+
+.formgrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.formgrid input, .formgrid select {
+    flex: 1 1 200px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.filters label {
+    font-size: 12px;
+    color: #2f6f65;
+    display: block;
+}
+
+.filters .btn, .btnline .btn {
+    display: inline-block;
+}
+
+.btn.blue { background-color: #2f6f65; }
+
+.scroll {
+    overflow-x: auto;
+}
+
+td.left, th.left {
+    text-align: left;
+}
+
+.small {
+    font-size: 12px;
+    color: #555;
+}
+
+table form {
+    margin: 0;
+}
+
+table form button.red {
+    background-color: rgb(223, 24, 44);
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 13px;
+}

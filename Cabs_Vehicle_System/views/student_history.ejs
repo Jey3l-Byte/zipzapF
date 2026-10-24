@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/list.css">
+    <link rel="stylesheet" href="/extra.css">
+    <title>My Gate History</title>
+</head>
+<body>
+
+    <div class="topbar">
+        <span>STUDENT: <%= user.fullname %></span>
+        <a class="navlink first" href="/student">My Vehicles</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="box">
+        <h2>MY GATE HISTORY</h2>
+        <p class="small">Latest 200 entries and exits of your own vehicles.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>DATE &amp; TIME</th>
+                    <th>PLATE</th>
+                    <th>ACTION</th>
+                    <th>RECORDED BY</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    if(logs.length > 0){
+                        logs.forEach((data)=>{
+                %>
+                <tr>
+                    <td><%= fmt(data.log_time) %></td>
+                    <td><%= data.plate %></td>
+                    <td><span class="badge <%= data.action %>"><%= data.action %></span></td>
+                    <td><%= data.guard_name %></td>
+                </tr>
+                <%
+                        })
+                    } else {
+                %>
+                <tr><td colspan="4">No gate activity yet.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

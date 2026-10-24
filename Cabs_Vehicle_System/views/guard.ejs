@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/list.css">
+    <title>Security Guard</title>
+</head>
+<body>
+
+    <div class="topbar">
+        <span>GUARD: <%= user.fullname %></span>
+        <a href="/guard/vehicles" style="margin-left:auto; margin-right:15px;">Registered Vehicles</a>
+        <a href="/guard/visitors" style="margin-right:15px;">Visitor Logbook</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="box">
+        <h2>SEARCH PLATE NUMBER</h2>
+        <form action="/guard" method="GET">
+            <input name="plate" type="text" placeholder="Enter Plate Number" value="<%= plate %>" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <% if(searched && vehicle === null){ %>
+            <p class="msg red">Plate number not found. Vehicle is NOT registered.</p>
+        <% } %>
+
+        <% if(vehicle !== null){ %>
+            <table>
+                <tr><th>PLATE</th><td><%= vehicle.plate %></td></tr>
+                <tr><th>OWNER</th><td><%= vehicle.fullname %></td></tr>
+                <tr><th>VEHICLE</th><td><%= vehicle.color %> <%= vehicle.brand %> (<%= vehicle.type %>)</td></tr>
+                <tr><th>STATUS</th><td><span class="badge <%= vehicle.status %>"><%= vehicle.status %></span></td></tr>
+                <tr><th>LOCATION</th><td><%= lastAction === 'ENTRY' ? 'INSIDE' : 'OUTSIDE' %></td></tr>
+            </table>
+
+            <% if(vehicle.status === 'Approved'){ %>
+                <% if(lastAction === 'ENTRY'){ %>
+                    <a class="btn red big" href="/gate/<%= vehicle.idnum %>/EXIT">RECORD EXIT</a>
+                <% } else { %>
+                    <a class="btn green big" href="/gate/<%= vehicle.idnum %>/ENTRY">RECORD ENTRY</a>
+                <% } %>
+            <% } else { %>
+                <p class="msg red">NOT ALLOWED. Vehicle is <%= vehicle.status %>.</p>
+            <% } %>
+        <% } %>
+    </div>
+
+    <div class="box">
+        <h2>RECENT GATE ACTIVITY</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>PLATE</th>
+                    <th>ACTION</th>
+                    <th>DATE &amp; TIME</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    if(logs.length > 0){
+                        logs.forEach((data)=>{
+                %>
+                <tr>
+                    <td><%= data.plate %></td>
+                    <td><%= data.action %></td>
+                    <td><%= new Date(data.log_time).toLocaleString() %></td>
+                </tr>
+                <%
+                        })
+                    } else {
+                %>
+                <tr><td colspan="3">No activity yet.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

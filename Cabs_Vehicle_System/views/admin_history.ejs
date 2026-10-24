@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/list.css">
+    <link rel="stylesheet" href="/extra.css">
+    <title>Gate History</title>
+</head>
+<body>
+
+    <div class="topbar">
+        <span>ADMIN: <%= user.fullname %></span>
+        <a class="navlink first" href="/admin">Vehicle Requests</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="box wide">
+        <h2>INSIDE NOW (<%= inside.length %>)</h2>
+        <div class="scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>TYPE</th>
+                    <th>PLATE</th>
+                    <th>NAME</th>
+                    <th>INSIDE SINCE</th>
+                    <th>NOTE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    if(inside.length > 0){
+                        inside.forEach((data)=>{
+                %>
+                <tr>
+                    <td><span class="badge <%= data.kind %>"><%= data.kind %></span></td>
+                    <td><%= data.plate %></td>
+                    <td><%= data.name %></td>
+                    <td><%= fmt(data.since) %></td>
+                    <td><%= data.note %></td>
+                </tr>
+                <%
+                        })
+                    } else {
+                %>
+                <tr><td colspan="5">Nobody is inside right now.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div class="box wide">
+        <h2>GATE HISTORY</h2>
+
+        <form class="filters" action="/admin/history" method="GET">
+            <div>
+                <label>Type</label>
+                <select name="type">
+                    <option value="all" <%= f.type === 'all' ? 'selected' : '' %>>All</option>
+                    <option value="Registered" <%= f.type === 'Registered' ? 'selected' : '' %>>Registered</option>
+                    <option value="Visitor" <%= f.type === 'Visitor' ? 'selected' : '' %>>Visitor</option>
+                </select>
+            </div>
+            <div>
+                <label>From</label>
+                <input type="date" name="from" value="<%= f.from %>">
+            </div>
+            <div>
+                <label>To</label>
+                <input type="date" name="to" value="<%= f.to %>">
+            </div>
+            <div>
+                <label>Plate or name</label>
+                <input type="text" name="q" placeholder="Search" value="<%= f.q %>">
+            </div>
+            <button type="submit">Filter</button>
+            <a class="btn blue" href="/admin/history">RESET</a>
+            <a class="btn green" href="<%= exportUrl %>">EXPORT CSV</a>
+        </form>
+
+        <% if(truncated){ %>
+            <p class="small">Showing the latest 500 only. Use Export CSV to get everything.</p>
+        <% } %>
+
+        <div class="scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>DATE &amp; TIME</th>
+                    <th>TYPE</th>
+                    <th>PLATE</th>
+                    <th>NAME</th>
+                    <th>ACTION</th>
+                    <th>GUARD</th>
+                    <th>DETAILS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    if(rows.length > 0){
+                        rows.forEach((data)=>{
+                %>
+                <tr>
+                    <td><%= fmt(data.event_time) %></td>
+                    <td><span class="badge <%= data.kind %>"><%= data.kind %></span></td>
+                    <td><%= data.plate %></td>
+                    <td><%= data.name %></td>
+                    <td><span class="badge <%= data.action %>"><%= data.action %></span></td>
+                    <td><%= data.guard %></td>
+                    <td class="left"><%= data.details %></td>
+                </tr>
+                <%
+                        })
+                    } else {
+                %>
+                <tr><td colspan="7">No records match.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+</body>
+</html>

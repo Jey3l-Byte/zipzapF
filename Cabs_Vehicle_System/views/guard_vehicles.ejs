@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/list.css">
+    <link rel="stylesheet" href="/extra.css">
+    <title>Registered Vehicles</title>
+</head>
+<body>
+
+    <div class="topbar">
+        <span>GUARD: <%= user.fullname %></span>
+        <a class="navlink first" href="/guard">Gate Search</a>
+        <a class="navlink" href="/guard/visitors">Visitor Logbook</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="box wide">
+        <h2>REGISTERED VEHICLES</h2>
+        <form action="/guard/vehicles" method="GET">
+            <input name="q" type="text" placeholder="Search plate, owner or brand" value="<%= q %>">
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>PLATE</th>
+                    <th>OWNER</th>
+                    <th>VEHICLE</th>
+                    <th>LOCATION</th>
+                    <th>LAST ACTIVITY</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    if(vehicle.length > 0){
+                        vehicle.forEach((data)=>{
+                            const inside = (data.last_action === 'ENTRY');
+                %>
+                <tr>
+                    <td><%= data.plate %></td>
+                    <td><%= data.fullname %></td>
+                    <td><%= data.color %> <%= data.brand %> (<%= data.type %>)</td>
+                    <td><span class="badge <%= inside ? 'INSIDE' : 'OUTSIDE' %>"><%= inside ? 'INSIDE' : 'OUTSIDE' %></span></td>
+                    <td><%= data.last_time ? fmt(data.last_time) : '-' %></td>
+                    <td>
+                        <% if(inside){ %>
+                            <a class="btn red" href="/gate/<%= data.idnum %>/EXIT">EXIT</a>
+                        <% } else { %>
+                            <a class="btn green" href="/gate/<%= data.idnum %>/ENTRY">ENTRY</a>
+                        <% } %>
+                    </td>
+                </tr>
+                <%
+                        })
+                    } else {
+                %>
+                <tr><td colspan="6">No approved vehicles found.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+</body>
+</html>
